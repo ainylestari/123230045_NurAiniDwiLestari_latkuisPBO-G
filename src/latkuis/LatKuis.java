@@ -4,8 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LatKuis {
-    private static final String FIXED_USERNAME = "123220064";
+    private static final String FIXED_USERNAME = "123230045";
     private static final String FIXED_PASSWORD = "ifkelasg";
+    private static Object formPanel;
     
     public static void main(String[] args) {
         showLoginScreen();
@@ -13,7 +14,7 @@ public class LatKuis {
 
     private static void showLoginScreen() {
         JFrame frame = new JFrame("Login");
-        frame.setSize(350, 200);
+        frame.setSize(350, 150);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new GridLayout(3, 2));
 
@@ -27,6 +28,7 @@ public class LatKuis {
         frame.add(txtUsername);
         frame.add(lblPassword);
         frame.add(txtPassword);
+        frame.add(new JLabel(""));
         frame.add(btnLogin);
         
         btnLogin.addActionListener(e -> {
@@ -46,15 +48,16 @@ public class LatKuis {
 
     private static void showLandingPage() {
         JFrame frame = new JFrame("Input Data Mahasiswa");
-        frame.setSize(400, 300);
-        frame.setLayout(new GridLayout(7, 2));
+        frame.setSize(500, 300);
+        frame.setLayout(new FlowLayout(FlowLayout.LEFT));
+        frame.setLayout(new GridLayout(7, 2, 5, 5));
 
         JTextField txtNama = new JTextField();
         JTextField txtNIM = new JTextField();
         JTextField txtTugas = new JTextField();
         JTextField txtKuis = new JTextField();
         
-        JRadioButton rbTeori = new JRadioButton("Kelas Teori", true);
+        JRadioButton rbTeori = new JRadioButton("Kelas Teori");
         JRadioButton rbPraktikum = new JRadioButton("Kelas Praktikum");
         ButtonGroup group = new ButtonGroup();
         group.add(rbTeori);
@@ -72,13 +75,17 @@ public class LatKuis {
         frame.add(txtNIM);
         frame.add(new JLabel("Nilai Tugas:"));
         frame.add(txtTugas);
-        frame.add(new JLabel("Nilai Kuis:"));
+        frame.add(new JLabel("Nilai Quis:"));
         frame.add(txtKuis);
-        frame.add(rbTeori);
-        frame.add(rbPraktikum);
+        frame.add(new JLabel("Tipe Kelas:"));
+        JPanel kelasPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        kelasPanel.add(rbTeori);
+        kelasPanel.add(rbPraktikum);
+        frame.add(kelasPanel);
+        frame.add(new JLabel("Mata Kuliah:"));
         frame.add(cbMataKuliah);
         frame.add(btnSubmit);
-        frame.add(btnLogout);
+        frame.add(btnLogout); 
         
         btnSubmit.addActionListener(e -> {
             try {
@@ -91,9 +98,13 @@ public class LatKuis {
                     totalNilai = (0.7 * nilaiTugas) + (0.3 * nilaiKuis);
                 }
                 String hasil = totalNilai > 85 ? "PASS" : "NOT PASS";
-                JOptionPane.showMessageDialog(frame, "Nama: " + txtNama.getText() + "\nNIM: " + txtNIM.getText() +
+                JOptionPane.showMessageDialog(frame, 
+                        "Nama: " + txtNama.getText() + 
+                        "\nNIM: " + txtNIM.getText() +
+                        "\nTipe Kelas: " + (rbTeori.isSelected() ? "Teori" : "Praktikum") +
                         "\nMata Kuliah: " + cbMataKuliah.getSelectedItem() +
-                        "\nTotal Nilai: " + totalNilai + "\nHasil: " + hasil);
+                        "\nHasil: " + hasil +
+                        "\nTotal Nilai: " + totalNilai);
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(frame, "Masukkan nilai yang valid!", "Error", JOptionPane.ERROR_MESSAGE);
             }
